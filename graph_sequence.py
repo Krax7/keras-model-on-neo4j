@@ -34,7 +34,7 @@ class GraphSequence(keras.utils.Sequence):
 				l.bathrooms AS num_bathrooms,
 				l.accommodates AS accommodates,
 				l.price AS price,
-				CASE WHEN l.review_scores_value > 8 THEN 1 ELSE 0 END AS y;
+				CASE WHEN l.review_scores_value > 9 THEN 1 ELSE 0 END AS y;
 		"""
 
 		self.query_params = {
@@ -72,7 +72,6 @@ class GraphSequence(keras.utils.Sequence):
 			# Split the data up into "batches"
 			data = more_itertools.chunked(data, self.batch_size)
 
-			print(self.data)
 			# Format our batches in the way Keras expects them:
 			# An array of tuples (x_batch, y_batch)
 
@@ -82,6 +81,7 @@ class GraphSequence(keras.utils.Sequence):
 			# A y_batch is a numpy array of shape (batch_size,1) containing the review scores.
 
 			self.data = [ (np.array([j[0] for j in i]), np.array([j[1] for j in i])) for i in data]
+			print(self.data)
 
 	def __len__(self):
 		return len(self.data)
