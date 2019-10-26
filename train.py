@@ -3,6 +3,8 @@
 from keras.models import Sequential
 from keras.layers import Dense
 from sklearn import preprocessing
+from sklearn.datasets.samples_generator import make_blobs
+from sklearn.preprocessing import MinMaxScaler
 
 from graph_sequence import *
 
@@ -29,14 +31,11 @@ def generate_model():
 def train(args):
 
 	model = generate_model()
-
-	#helpers.execute_on_pipeline(ohe_pipeline, X_train, y_train, X_test, y_test)
 	model.compile(loss='mean_squared_error', #mean_squared_erro
 				optimizer='adam', #adam
 				metrics=['accuracy'])
 
 	# Convert labels to categorical one-hot encoding
-	#one_hot_labels = keras.utils.to_categorical(labels, num_classes=10)
 	seq_train = GraphSequence(args)
 	#print(seq_train)
 	
@@ -46,6 +45,17 @@ def train(args):
 	result = model.evaluate_generator(seq_test)
 
 	print(f"Accuracy: {round(result[1]*100)}%")
+
+	scalar = MinMaxScaler()
+	# new instances where we do not know the answer
+	Xnew, _ = make_blobs(n_samples=3, centers=None, n_features=14, random_state=1)
+	scalar.fit(Xnew)
+	Xnew = scalar.transform(Xnew)
+	# make a prediction
+	ynew = model.predict_classes(Xnew)
+	# show the inputs and predicted outputs
+	for i in range(len(Xnew)):
+		print("X=%s, Predicted=%s" % (Xnew[i], ynew[i]))
 
 
 if __name__ == '__main__':

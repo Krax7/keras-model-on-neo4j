@@ -81,7 +81,6 @@ class GraphSequence(keras.utils.Sequence):
 			# A y_batch is a numpy array of shape (batch_size,1) containing the review scores.
 
 			self.data = [ (np.array([j[0] for j in i]), np.array([j[1] for j in i])) for i in data]
-			print(self.data)
 
 	def __len__(self):
 		return len(self.data)
