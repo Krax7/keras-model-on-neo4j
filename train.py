@@ -48,7 +48,7 @@ def train(args):
 
 	scalar = MinMaxScaler()
 	# new instances where we do not know the answer
-	Xnew, _ = make_blobs(n_samples=3, centers=None, n_features=14, random_state=1)
+	Xnew, _ = make_blobs(n_samples=5, centers=None, n_features=14, random_state=1)
 	scalar.fit(Xnew)
 	Xnew = scalar.transform(Xnew)
 	# make a prediction
